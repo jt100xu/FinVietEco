@@ -1,6 +1,4 @@
 import React from 'react';
-import App from 'FinVietEco/js/app';
-import LAF from 'FinVietEco/js/LAF';
 import { NavigationActions } from 'react-navigation';
 
 export default class BaseScreen extends React.Component {

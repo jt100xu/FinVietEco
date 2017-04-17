@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
-import LAF from 'FinVietEco/js/LAF';
+import CommonStyles from 'FinVietEco/js/CommonStyles';
 
 export default class SplashScreen extends BaseScreen {
     constructor(props) {
@@ -19,7 +19,7 @@ export default class SplashScreen extends BaseScreen {
     }
 
     render() {
-        return <View style={[LAF.statusBarOverlayFix, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
+        return <View style={[CommonStyles.statusBarOverlayFix, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
             <Text> Hello... </Text>
         </View>
     }

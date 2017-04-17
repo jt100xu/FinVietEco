@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
-import LAF from 'FinVietEco/js/LAF';
+import CommonStyles from 'FinVietEco/js/CommonStyles';
 
 export default class SigninScreen extends BaseScreen {
     static navigationOptions = {
@@ -23,13 +23,13 @@ export default class SigninScreen extends BaseScreen {
     }
 
     render() {
-        return <View style={[LAF.statusBarOverlayFix, styles.container]}>
+        return <View style={[CommonStyles.statusBarOverlayFix, styles.container]}>
             <TextInput style={styles.textInput}
                 onChangeText={(text) => this.setState({ initiator: text })}
                 value={this.state.initiator}></TextInput>
             <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => {
                 App.globalService._sendSetup(this.state.initiator, (response, e) => {
-                    if (e === undefined || e === null) {
+                    if (response !== null && response !== undefined) {
                         //success
                         switch (response.result) {
                             case 3:
@@ -37,6 +37,7 @@ export default class SigninScreen extends BaseScreen {
                                 alert(response.message)
                                 break;
                             case 20002:
+                            case 0:
                                 //agent invited
                                 super._navigateTo('OTP', response)
                                 break;

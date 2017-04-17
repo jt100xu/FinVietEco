@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
-import LAF from 'FinVietEco/js/LAF';
+import CommonStyles from 'FinVietEco/js/CommonStyles';
 
 const TIMEOUT = 300000;
 
@@ -22,16 +22,17 @@ export default class OTPScreen extends BaseScreen {
         super(props)
         this.state = {
             otp: '',
-            remainTimeOut: TIMEOUT,
-            remainTimeOutText: this._convertTimeToString(TIMEOUT),
+            remainTimeOut: 0,
+            remainTimeOutText: '',
         }
     }
 
-    _timeoutTictac() {
+    _updateTimeout() {
         let remain = this.state.remainTimeOut - 1000;
         if (remain <= 0) {
-            clearInterval(_timeout)
+            clearInterval(this._timeout)
             this.setState({
+                remainTimeOut: remain,
                 remainTimeOutText: 'Gửi lại',
             })
         } else {
@@ -42,26 +43,37 @@ export default class OTPScreen extends BaseScreen {
         }
     }
 
+    _resetTimeOutCountdown() {
+        this.setState({
+            remainTimeOut: TIMEOUT,
+            remainTimeOutText: this._convertTimeToString(TIMEOUT),
+        })
+    }
+
+    _genOTPcode() {
+        if (this.props.navigation.state.params.initiator === '01677779999') {
+            this.setState({ otp: '596863' })
+        } else {
+            this.setState({ otp: this._randomOtp() })
+        }
+    }
+
+    _randomOtp() {
+        return `${Math.random()}`.substr(2, 6);
+    }
+
+    _startTimeoutCountdown() {
+        this._genOTPcode()
+        this._resetTimeOutCountdown()
+        this._timeout = setInterval(this._updateTimeout.bind(this), 1000)
+    }
+
     componentDidMount() {
-        this._toggleInputOTP()
+        this._startTimeoutCountdown()
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
         clearInterval(this._timeout)
-    }
-
-    _toggleInputOTP() {
-        const navigationParams = this.props.navigation.state.params;
-
-        if (navigationParams.initiator === '01677779999') {
-            this.setState({ otp: '596863' })
-        } else {
-            let randomOTP = '';
-            this.setState({ otp: randomOTP })
-        }
-
-        this._timeout = setInterval(this._timeoutTictac(), 1000)
     }
 
     _convertTo2char(num) {
@@ -73,35 +85,47 @@ export default class OTPScreen extends BaseScreen {
             this._convertTo2char(Math.floor(time / 1000 % 60));
     }
 
+    _onPressResendOTP() {
+        if (this.state.remainTimeOut <= 0) {
+            console.log('đã hết timeout, request Setup')
+            App.globalService._sendSetup(this.props.navigation.state.params.initiator, (response, e) => {
+                if (response !== null && response !== undefined) {
+                    //success
+                    this._startTimeoutCountdown()
+                }
+            })
+        } else {
+            console.log('chưa hết timeout')
+        }
+    }
+
+    _onPressSendOTPConfirm() {
+        App.globalService._sendOTPConfirm(this.props.navigation.state.params.initiator, this.state.otp, (response, e) => {
+            if (response !== null && response !== undefined) {
+                //success
+                switch (response.result) {
+                    case 0:
+                        //go to main
+                        break;
+                    case 20001:
+                        alert(response.message)
+                        break;
+                }
+            }
+        })
+    }
+
     render() {
         const navigationParams = this.props.navigation.state.params;
 
-        return <View style={[LAF.statusBarOverlayFix, styles.container]}>
+        return <View style={[CommonStyles.statusBarOverlayFix, styles.container]}>
             <TextInput style={styles.textInput}
                 onChangeText={(text) => this.setState({ otp: text })}
                 value={this.state.otp}></TextInput>
-            <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => {
-                if (this.state.remainTimeOut <= 0) {
-                    console.log('đã hết timeout, request Setup')
-                    App.globalService._sendSetup(navigationParams.initiator, (response, e) => {
-                        if (e === null || e === undefined) {
-                            //success
-                            this._toggleInputOTP()
-                        }
-                    })
-                } else {
-                    console.log('chưa hết timeout')
-                }
-            }}>
+            <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => this._onPressResendOTP()}>
                 <Text style={styles.roundedButtonText}>{this.state.remainTimeOutText}</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => {
-                App.globalService._sendOTPConfirm(navigationParams.initiator, this.state.otp, (response, e) => {
-                    if (e === null) {
-                        //success                        
-                    }
-                })
-            }}>
+            <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => this._onPressSendOTPConfirm()}>
                 <Text style={styles.roundedButtonText}>Send Otp confirm</Text>
             </TouchableHighlight>
         </View>
