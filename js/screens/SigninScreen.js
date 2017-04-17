@@ -6,10 +6,11 @@ import {
     StyleSheet,
     TextInput,
 } from 'react-native';
+import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
 import LAF from 'FinVietEco/js/LAF';
 
-export default class SigninScreen extends React.Component {
+export default class SigninScreen extends BaseScreen {
     static navigationOptions = {
         title: 'Sign in',
     };
@@ -22,14 +23,26 @@ export default class SigninScreen extends React.Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return <View style={[LAF.statusBarOverlayFix, styles.container]}>
             <TextInput style={styles.textInput}
                 onChangeText={(text) => this.setState({ initiator: text })}
                 value={this.state.initiator}></TextInput>
             <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => {
-                App.globalService._sendSetup(this.state.initiator)
+                App.globalService._sendSetup(this.state.initiator, (response, e) => {
+                    if (e === undefined || e === null) {
+                        //success
+                        switch (response.result) {
+                            case 3:
+                                //agent not found
+                                alert(response.message)
+                                break;
+                            case 20002:
+                                //agent invited
+                                super._navigateTo('OTP', response)
+                                break;
+                        }
+                    }
+                })
             }}>
                 <Text style={styles.roundedButtonText}>Sign in</Text>
             </TouchableHighlight>

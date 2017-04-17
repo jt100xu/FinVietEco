@@ -5,6 +5,7 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation'
 import SplashScreen from './screens/SplashScreen'
 import SigninScreen from './screens/SigninScreen'
+import OTPScreen from './screens/OTPScreen'
 import GlobalService from './network/GlobalService'
 
 export default class App { }
@@ -14,6 +15,7 @@ const FinVietEco = StackNavigator(
   {
     Splash: { screen: SplashScreen },
     Signin: { screen: SigninScreen },
+    OTP: { screen: OTPScreen },
   },
   {
     headerMode: 'none'
