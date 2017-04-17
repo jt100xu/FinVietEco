@@ -1,25 +1,31 @@
 import React from 'react';
 import CmdType from './CmdType';
 import GlobalLogicHandler from './GlobalLogicHandler';
+import App from 'FinVietEco/js/app';
 
 export default class GlobalMessageHandler {
 
     constructor(props) {
-        super(props)
-
-        var handler = new GlobalLogicHandler();
+        this.handler = new GlobalLogicHandler();
     }
 
-    _onOpen() { }
-    _onMessage(e) {
+    _onSocketOpen() { }
+    _onSocketMessage(e) {
         try {
-            let response = e.json()
-            switch (response.cmdType) {
+            let response = JSON.parse(e.data);
+            if (response.cmdtype !== CmdType.ACK) { App.globalService._sendACK() }
+            switch (response.cmdtype) {
+                case CmdType.SETUP:
+                    this.handler._onSetup(response)
+                    break;
             }
         } catch (e) {
-            console.error(`GlobalMessageHandler ---> client error: ${e}`);
+            _onMessageHanlderError(e)
         }
     }
-    _onError(e) { }
-    _onClose(e) { }
+    _onSocketError(e) { }
+    _onSocketClose(e) { }
+    _onMessageHanlderError(e) {
+        console.log(`GlobalMessageHandler ---> client message handle error: ${e}`);
+    }
 }
