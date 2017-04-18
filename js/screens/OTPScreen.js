@@ -10,6 +10,7 @@ import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
+import EventBus from 'eventbusjs';
 
 const TIMEOUT = 300000;
 
@@ -27,19 +28,38 @@ export default class OTPScreen extends BaseScreen {
             remainTimeOutText: '',
         }
 
-        App.globalMessageHandler._getEventBus()._subscribe(`${CmdType.SETUP}`, this._onMessage, this)
-        App.globalMessageHandler._getEventBus()._subscribe(`${CmdType.OTP_CONFIRM_RESPONSE}`, this._onMessage, this)
+        this._subscribeEvents()
     }
 
-    _onMessage(self, response) {
+    _subscribeEvents() {
+        EventBus.addEventListener(`${CmdType.SETUP}`, this._onMessage, this)
+        EventBus.addEventListener(`${CmdType.OTP_CONFIRM_RESPONSE}`, this._onMessage, this)
+    }
+
+    _unsubcribeEvents() {
+        EventBus.removeEventListener(`${CmdType.SETUP}`, this._onMessage, this)
+        EventBus.removeEventListener(`${CmdType.OTP_CONFIRM_RESPONSE}`, this._onMessage, this)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this._timeout)
+        this._unsubcribeEvents()
+    }
+
+    componentDidMount() {
+        this._startTimeoutCountdown()
+    }
+
+    _onMessage(event, response) {
         switch (response.cmdtype) {
             case CmdType.SETUP:
-                self._startTimeoutCountdown()
+                this._startTimeoutCountdown()
                 break;
             case CmdType.OTP_CONFIRM_RESPONSE:
                 switch (response.result) {
                     case 0:
                         //go to main
+                        this._navigateToTop('Main', response)
                         break;
                     case 20001:
                         alert(response.message)
@@ -47,16 +67,6 @@ export default class OTPScreen extends BaseScreen {
                 }
                 break;
         }
-    }
-
-    componentDidMount() {
-        this._startTimeoutCountdown()
-    }
-
-    componentWillUnmount() {
-        clearInterval(this._timeout)
-        App.globalMessageHandler._getEventBus()._unsubscribe(`${CmdType.SETUP}`, this._onMessage)
-        App.globalMessageHandler._getEventBus()._unsubscribe(`${CmdType.OTP_CONFIRM}`, this._onMessage)
     }
 
     _updateTimeout() {
@@ -126,39 +136,16 @@ export default class OTPScreen extends BaseScreen {
     render() {
         const navigationParams = this.props.navigation.state.params;
 
-        return <View style={[CommonStyles.statusBarOverlayFix, styles.container]}>
-            <TextInput style={styles.textInput}
+        return <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
+            <TextInput style={CommonStyles.textInput}
                 onChangeText={(text) => this.setState({ otp: text })}
                 value={this.state.otp}></TextInput>
-            <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => this._onPressResendOTP()}>
-                <Text style={styles.roundedButtonText}>{this.state.remainTimeOutText}</Text>
+            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={CommonStyles.underlay.color} onPress={() => this._onPressResendOTP()}>
+                <Text style={CommonStyles.roundedButtonText}>{this.state.remainTimeOutText}</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => this._onPressSendOTPConfirm()}>
-                <Text style={styles.roundedButtonText}>Send Otp confirm</Text>
+            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={CommonStyles.underlay.color} onPress={() => this._onPressSendOTPConfirm()}>
+                <Text style={CommonStyles.roundedButtonText}>Send Otp confirm</Text>
             </TouchableHighlight>
         </View>
     }
 }
-
-const underlayColor = "honeydew";
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-    },
-    roundedButton: {
-        height: 50,
-        borderRadius: 11,
-        backgroundColor: "#fff",
-        borderColor: '#73AD21',
-        borderWidth: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        margin: 5,
-    },
-    roundedButtonText: {
-        fontSize: 14,
-        backgroundColor: "transparent"
-    },
-    textInput: { height: 40, borderColor: 'gray', borderWidth: 1 },
-});
