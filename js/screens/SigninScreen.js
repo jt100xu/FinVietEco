@@ -61,10 +61,10 @@ export default class SigninScreen extends BaseScreen {
             <TextInput style={CommonStyles.textInput}
                 onChangeText={(text) => this.setState({ initiator: text })}
                 value={this.state.initiator}></TextInput>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={CommonStyles.underlay.color} onPress={() => {
+            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={() => {
                 App.globalService._sendSetup(this.state.initiator)
             }}>
-                <Text style={CommonStyles.roundedButtonText}>Sign in</Text>
+                <Text style={CommonStyles.roundedButtonText}>Sign in</Text>                
             </TouchableHighlight>
         </View>
     }

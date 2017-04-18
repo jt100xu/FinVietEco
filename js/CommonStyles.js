@@ -8,7 +8,6 @@ module.exports = StyleSheet.create({
     statusBarOverlayFix: {
         marginTop: (Platform.OS === 'ios') ? Navigator.NavigationBar.Styles.General.StatusBarHeight : 0,
     },
-    underlay: { color: "honeydew" },
     verticalContainer: {
         flex: 1,
         flexDirection: 'column',
@@ -28,5 +27,6 @@ module.exports = StyleSheet.create({
         backgroundColor: "transparent"
     },
     textInput: { height: 20, borderColor: 'gray', borderWidth: 1, fontSize: 10 },
+    text: { fontSize: 10 },
 });
 

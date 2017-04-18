@@ -133,4 +133,9 @@ export default class GlobalService {
         // agent: {"reference":"01668139700",pin:"123123"}
         this._send({ cmdtype: CmdType.HELLO, initiator: initiator, token: token, reqid: reqid, agent: agent })
     }
+
+    _getDownloadUrl(initiator, token, filename) {
+        return 'http://test.finviet.com.vn:3000/download?initiator=' + initiator + '&token=' + token + '&filename=' + filename;
+    }
 }
+GlobalService.SERVER = 'wss://test.finviet.com.vn:3878';

@@ -12,7 +12,7 @@ import GlobalMessageHandler from './network/GlobalMessageHandler'
 
 export default class App { }
 
-const server = 'wss://test.finviet.com.vn:3878';
+const server = GlobalService.SERVER;
 App.socket = new WebSocket(server);
 App.socket.onopen = () => {
   console.log(`WebSocket ---> client connected to ${server}`);
@@ -32,6 +32,7 @@ App.socket.onclose = (e) => {
 };
 App.globalService = new GlobalService();
 App.globalMessageHandler = new GlobalMessageHandler();
+App.userInfo={};
 
 const FinVietEco = StackNavigator(
   {

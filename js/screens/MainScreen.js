@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
+    Image,
 } from 'react-native';
 import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
@@ -30,20 +31,33 @@ export default class MainScreen extends BaseScreen {
     _unsubcribeEvents() {
     }
 
+    _onMessage(event, response) {
+        switch (response.cmdtype) {
+        }
+    }
+
     componentWillUnmount() {
         this._unsubcribeEvents()
     }
 
-    _onMessage(event, response) {
-        switch (response.cmdtype) {
-
-        }
+    componentDidMount() {
+        let data = this.props.navigation.state.params;
+        this.setState({
+            // dateString: ,
+        })
     }
 
+
     render() {
+        let data = this.props.navigation.state.params;
+        let pic = {
+            uri: App.globalService._getDownloadUrl(data.initiator, data.token, data.parent_avatar),
+        };
         return <ScrollView>
             <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
-
+                <Text style={CommonStyles.text}>Xin chao {data.parent_name}</Text>
+                <Image source={pic} style={{ width: 50, height: 50 }} />
+                <Text style={CommonStyles.text}>{this.state.dateString}</Text>
             </View>
         </ScrollView>
     }

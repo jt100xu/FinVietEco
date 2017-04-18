@@ -140,10 +140,10 @@ export default class OTPScreen extends BaseScreen {
             <TextInput style={CommonStyles.textInput}
                 onChangeText={(text) => this.setState({ otp: text })}
                 value={this.state.otp}></TextInput>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={CommonStyles.underlay.color} onPress={() => this._onPressResendOTP()}>
+            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressResendOTP()}>
                 <Text style={CommonStyles.roundedButtonText}>{this.state.remainTimeOutText}</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={CommonStyles.underlay.color} onPress={() => this._onPressSendOTPConfirm()}>
+            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressSendOTPConfirm()}>
                 <Text style={CommonStyles.roundedButtonText}>Send Otp confirm</Text>
             </TouchableHighlight>
         </View>
