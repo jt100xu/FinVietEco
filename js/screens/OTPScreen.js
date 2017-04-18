@@ -9,6 +9,7 @@ import {
 import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
+import CmdType from 'FinVietEco/js/network/CmdType';
 
 const TIMEOUT = 300000;
 
@@ -25,6 +26,37 @@ export default class OTPScreen extends BaseScreen {
             remainTimeOut: 0,
             remainTimeOutText: '',
         }
+
+        App.globalMessageHandler._getEventBus()._subscribe(`${CmdType.SETUP}`, this._onMessage, this)
+        App.globalMessageHandler._getEventBus()._subscribe(`${CmdType.OTP_CONFIRM_RESPONSE}`, this._onMessage, this)
+    }
+
+    _onMessage(self, response) {
+        switch (response.cmdtype) {
+            case CmdType.SETUP:
+                self._startTimeoutCountdown()
+                break;
+            case CmdType.OTP_CONFIRM_RESPONSE:
+                switch (response.result) {
+                    case 0:
+                        //go to main
+                        break;
+                    case 20001:
+                        alert(response.message)
+                        break;
+                }
+                break;
+        }
+    }
+
+    componentDidMount() {
+        this._startTimeoutCountdown()
+    }
+
+    componentWillUnmount() {
+        clearInterval(this._timeout)
+        App.globalMessageHandler._getEventBus()._unsubscribe(`${CmdType.SETUP}`, this._onMessage)
+        App.globalMessageHandler._getEventBus()._unsubscribe(`${CmdType.OTP_CONFIRM}`, this._onMessage)
     }
 
     _updateTimeout() {
@@ -68,13 +100,6 @@ export default class OTPScreen extends BaseScreen {
         this._timeout = setInterval(this._updateTimeout.bind(this), 1000)
     }
 
-    componentDidMount() {
-        this._startTimeoutCountdown()
-    }
-
-    componentWillUnmount() {
-        clearInterval(this._timeout)
-    }
 
     _convertTo2char(num) {
         return num < 10 ? '0' + num : num;
@@ -88,31 +113,14 @@ export default class OTPScreen extends BaseScreen {
     _onPressResendOTP() {
         if (this.state.remainTimeOut <= 0) {
             console.log('đã hết timeout, request Setup')
-            App.globalService._sendSetup(this.props.navigation.state.params.initiator, (response, e) => {
-                if (response !== null && response !== undefined) {
-                    //success
-                    this._startTimeoutCountdown()
-                }
-            })
+            App.globalService._sendSetup(this.props.navigation.state.params.initiator)
         } else {
             console.log('chưa hết timeout')
         }
     }
 
     _onPressSendOTPConfirm() {
-        App.globalService._sendOTPConfirm(this.props.navigation.state.params.initiator, this.state.otp, (response, e) => {
-            if (response !== null && response !== undefined) {
-                //success
-                switch (response.result) {
-                    case 0:
-                        //go to main
-                        break;
-                    case 20001:
-                        alert(response.message)
-                        break;
-                }
-            }
-        })
+        App.globalService._sendOTPConfirm(this.props.navigation.state.params.initiator, this.state.otp)
     }
 
     render() {

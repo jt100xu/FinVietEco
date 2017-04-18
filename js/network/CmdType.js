@@ -2,6 +2,7 @@ export default class CmdType {
     static ACK = 11;
     static SETUP = 14;
     static OTP_CONFIRM = 15;
+    static OTP_CONFIRM_RESPONSE = -15;
     static TOPUP = 6;
     static TRANSFER = 4;
     static REQ_FOR_MONEY = 26;

@@ -1,28 +1,42 @@
 import React from 'react';
 import CmdType from './CmdType';
 import App from 'FinVietEco/js/app';
+import EventBus from 'FinVietEco/js/EventBus';
 
 export default class GlobalMessageHandler {
-
     constructor(props) {
+        this.eventbus = new EventBus()
     }
 
-    _onSocketOpen() { }
-    _onSocketMessage(e, callback) {
+    _onSocketOpen() { 
+        console.log(`GlobalMessageHandler ---> fire event handler for socket opened`);
+        this.eventbus._fire('onSocketOpen')
+    }
+
+    _onSocketMessage(data) {
         try {
-            let response = JSON.parse(e.data);
+            let response = JSON.parse(data);
             if (response.cmdtype !== CmdType.ACK) {
                 App.globalService._sendACK()
-                if (typeof callback === 'function') callback(response)
+                console.log(`GlobalMessageHandler ---> fire event handler for cmdtype:${response.cmdtype}`);
+                this.eventbus._fire(`${response.cmdtype}`, response)
             }
         } catch (e) {
-            this._onMessageHanlderError(e)
-            if (typeof callback === 'function') callback(null, e)
+            console.error(`GlobalMessageHandler ---> client message handle error: ${e}`);            
         }
     }
-    _onSocketError(e) { }
-    _onSocketClose(e) { }
-    _onMessageHanlderError(e) {
-        console.log(`GlobalMessageHandler ---> client message handle error: ${e}`);
+
+    _onSocketError(e) { 
+        console.error(`GlobalMessageHandler ---> fire event handler for socket error: ${e}`);
+        this.eventbus._fire('onSocketError', e)
+    }
+
+    _onSocketClose(e) { 
+        console.log(`GlobalMessageHandler ---> fire event handler for socket close: ${e}`);
+        this.eventbus._fire('onSocketClose', e)
+    }
+    
+    _getEventBus() {
+        return this.eventbus;
     }
 }

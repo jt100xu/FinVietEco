@@ -11,7 +11,7 @@ export default class SplashScreen extends BaseScreen {
     constructor(props) {
         super(props)
         let _update = setInterval(() => {
-            if (App.globalService._isConnected()) {
+            if (App.socket.readyState === WebSocket.OPEN) {
                 clearInterval(_update)
                 super._navigateToTop('Signin')
             }

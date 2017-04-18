@@ -9,6 +9,7 @@ import {
 import BaseScreen from './BaseScreen';
 import App from 'FinVietEco/js/app';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
+import CmdType from 'FinVietEco/js/network/CmdType';
 
 export default class SigninScreen extends BaseScreen {
     static navigationOptions = {
@@ -20,6 +21,30 @@ export default class SigninScreen extends BaseScreen {
         this.state = {
             initiator: '01677779999',
         };
+
+        App.globalMessageHandler._getEventBus()._subscribe(`${CmdType.SETUP}`, this._onMessage, this)
+    }
+
+    componentWillUnmount() {
+        App.globalMessageHandler._getEventBus()._unsubscribe(`${CmdType.SETUP}`, this._onMessage, this)
+    }
+
+    _onMessage(self, response) {
+        switch (response.cmdtype) {
+            case CmdType.SETUP:
+                switch (response.result) {
+                    case 3:
+                        //agent not found
+                        alert(response.message)
+                        break;
+                    case 20002:
+                    case 0:
+                        //agent invited
+                        self._navigateTo('OTP', response)
+                        break;
+                }
+                break;
+        }
     }
 
     render() {
@@ -28,22 +53,7 @@ export default class SigninScreen extends BaseScreen {
                 onChangeText={(text) => this.setState({ initiator: text })}
                 value={this.state.initiator}></TextInput>
             <TouchableHighlight style={styles.roundedButton} underlayColor={underlayColor} onPress={() => {
-                App.globalService._sendSetup(this.state.initiator, (response, e) => {
-                    if (response !== null && response !== undefined) {
-                        //success
-                        switch (response.result) {
-                            case 3:
-                                //agent not found
-                                alert(response.message)
-                                break;
-                            case 20002:
-                            case 0:
-                                //agent invited
-                                super._navigateTo('OTP', response)
-                                break;
-                        }
-                    }
-                })
+                App.globalService._sendSetup(this.state.initiator)
             }}>
                 <Text style={styles.roundedButtonText}>Sign in</Text>
             </TouchableHighlight>
