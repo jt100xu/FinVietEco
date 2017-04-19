@@ -83,7 +83,7 @@ export default class GlobalService {
         this._send({ cmdtype: CmdType.CHANGE_PASS, initiator: initiator, token: token, reqid: reqid, pin: pin, "new_pin": new_pin });
     }
 
-    _sendAgentInfo(callback) {
+    _sendAgentInfo(initiator, token, reqid) {
         this._send({ cmdtype: CmdType.AGENT_INFO, initiator: initiator, token: token, reqid: reqid });
     }
 

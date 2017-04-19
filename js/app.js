@@ -1,12 +1,15 @@
 import React from 'react';
 import {
   AppRegistry,
+  AppState,
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation'
 import SplashScreen from './screens/SplashScreen'
 import SigninScreen from './screens/SigninScreen'
 import OTPScreen from './screens/OTPScreen'
 import MainScreen from './screens/MainScreen'
+import ProfileScreen from './screens/ProfileScreen'
+import AgentInfoScreen from './screens/AgentInfoScreen'
 import GlobalService from './network/GlobalService'
 import GlobalMessageHandler from './network/GlobalMessageHandler'
 
@@ -32,7 +35,6 @@ App.socket.onclose = (e) => {
 };
 App.globalService = new GlobalService();
 App.globalMessageHandler = new GlobalMessageHandler();
-App.userInfo={};
 
 const FinVietEco = StackNavigator(
   {
@@ -40,6 +42,8 @@ const FinVietEco = StackNavigator(
     Signin: { screen: SigninScreen },
     OTP: { screen: OTPScreen },
     Main: { screen: MainScreen },
+    Profile: { screen: ProfileScreen },
+    AgentInfo: { screen: AgentInfoScreen },
   },
   {
     headerMode: 'none'

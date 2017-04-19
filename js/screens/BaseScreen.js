@@ -5,7 +5,7 @@ export default class BaseScreen extends React.Component {
 
     constructor(props) {
         super(props)
-    }
+    }    
 
     _navigateToTop(routeName, params) {
         const actionToDispatch = NavigationActions.reset({

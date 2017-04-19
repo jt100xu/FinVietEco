@@ -19,11 +19,14 @@ export default class SigninScreen extends BaseScreen {
 
     constructor(props) {
         super(props)
+        this._subscribeEvents()
         this.state = {
             initiator: '01677779999',
         };
+    }
 
-        this._subscribeEvents()
+    componentWillUnmount() {
+        this._unsubcribeEvents()
     }
 
     _subscribeEvents() {
@@ -32,10 +35,6 @@ export default class SigninScreen extends BaseScreen {
 
     _unsubcribeEvents() {
         EventBus.removeEventListener(`${CmdType.SETUP}`, this._onMessage, this)
-    }
-
-    componentWillUnmount() {
-        this._unsubcribeEvents()
     }
 
     _onMessage(event, response) {
@@ -56,14 +55,16 @@ export default class SigninScreen extends BaseScreen {
         }
     }
 
+    _onPressSignin(){
+        App.globalService._sendSetup(this.state.initiator)
+    }
+
     render() {
         return <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
             <TextInput style={CommonStyles.textInput}
                 onChangeText={(text) => this.setState({ initiator: text })}
                 value={this.state.initiator}></TextInput>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={() => {
-                App.globalService._sendSetup(this.state.initiator)
-            }}>
+            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressSignin()}>
                 <Text style={CommonStyles.roundedButtonText}>Sign in</Text>                
             </TouchableHighlight>
         </View>

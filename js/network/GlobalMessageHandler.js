@@ -19,9 +19,6 @@ export default class GlobalMessageHandler {
                 App.globalService._sendACK()                
                 console.log(`GlobalMessageHandler ---> fire event handler for cmdtype:${response.cmdtype}`);
                 EventBus.dispatch(`${response.cmdtype}`, this, response)
-                if(response.cmdtype === CmdType.OTP_CONFIRM_RESPONSE){
-                    App.userInfo = response;
-                }
             }
         } catch (e) {
             console.error(`GlobalMessageHandler ---> client message handle error: ${e}`);

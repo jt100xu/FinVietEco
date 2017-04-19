@@ -22,13 +22,21 @@ export default class OTPScreen extends BaseScreen {
 
     constructor(props) {
         super(props)
+        this._subscribeEvents()
         this.state = {
             otp: '',
             remainTimeOut: 0,
             remainTimeOutText: '',
         }
+    }
 
-        this._subscribeEvents()
+    componentWillUnmount() {
+        this._unsubcribeEvents()
+        clearInterval(this._timeout)
+    }
+
+    componentDidMount() {
+        this._startTimeoutCountdown()
     }
 
     _subscribeEvents() {
@@ -39,15 +47,6 @@ export default class OTPScreen extends BaseScreen {
     _unsubcribeEvents() {
         EventBus.removeEventListener(`${CmdType.SETUP}`, this._onMessage, this)
         EventBus.removeEventListener(`${CmdType.OTP_CONFIRM_RESPONSE}`, this._onMessage, this)
-    }
-
-    componentWillUnmount() {
-        clearInterval(this._timeout)
-        this._unsubcribeEvents()
-    }
-
-    componentDidMount() {
-        this._startTimeoutCountdown()
     }
 
     _onMessage(event, response) {

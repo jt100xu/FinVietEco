@@ -13,7 +13,7 @@ export default class SplashScreen extends BaseScreen {
         let _update = setInterval(() => {
             if (App.socket.readyState === WebSocket.OPEN) {
                 clearInterval(_update)
-                super._navigateToTop('Signin')
+                this._navigateToTop('Signin')
             }
         }, 1000)
     }
