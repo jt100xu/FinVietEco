@@ -28,7 +28,7 @@ export default class MainScreen extends BaseScreen {
 
     componentDidMount() {
         let data = this.props.navigation.state.params;
-        let avatar = App.globalService._getDownloadUrl(data.initiator, data.token, data.parent_avatar)
+        let avatar = App.globalService._getDownloadUrl(data.initiator, data.token, data.avatar)
         this.setState({
             avatarUrl: avatar,
         })

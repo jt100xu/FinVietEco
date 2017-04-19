@@ -135,7 +135,7 @@ export default class GlobalService {
     }
 
     _getDownloadUrl(initiator, token, filename) {
-        return 'http://test.finviet.com.vn:3000/download?initiator=' + initiator + '&token=' + token + '&filename=' + filename;
+        return 'http://app.finviet.com.vn:3000/download?initiator=' + initiator + '&token=' + token + '&filename=' + filename;
     }
 }
-GlobalService.SERVER = 'wss://test.finviet.com.vn:3878';
+GlobalService.SERVER = 'ws://app.finviet.com.vn:3979';
