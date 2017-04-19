@@ -22,6 +22,7 @@ export default class MainScreen extends BaseScreen {
     constructor(props) {
         super(props)
         this.state = {
+            avatarUrl: 'https://afspot.net/forum/uploads/profile/photo-548884.gif?_r=1468893451',
         };
     }
 
@@ -42,21 +43,25 @@ export default class MainScreen extends BaseScreen {
 
     componentDidMount() {
         let data = this.props.navigation.state.params;
+        let avatar = App.globalService._getDownloadUrl(data.initiator, data.token, data.parent_avatar)
         this.setState({
-            // dateString: ,
+            avatarUrl: avatar,
         })
+        console.log(`avatarUrl: ${avatar}`)
     }
 
 
     render() {
         let data = this.props.navigation.state.params;
-        let pic = {
-            uri: App.globalService._getDownloadUrl(data.initiator, data.token, data.parent_avatar),
-        };
         return <ScrollView>
             <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
                 <Text style={CommonStyles.text}>Xin chao {data.parent_name}</Text>
-                <Image source={pic} style={{ width: 50, height: 50 }} />
+                <Image
+                    source={{
+                        uri: this.state.avatarUrl,
+                    }}
+                    style={{ width: 50, height: 50 }}
+                    resizeMode='contain'/*, 'contain', 'stretch', 'repeat', 'center'*/ />
                 <Text style={CommonStyles.text}>{this.state.dateString}</Text>
             </View>
         </ScrollView>

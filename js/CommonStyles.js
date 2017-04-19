@@ -13,20 +13,20 @@ module.exports = StyleSheet.create({
         flexDirection: 'column',
     },
     roundedButton: {
-        height: 20,
-        borderRadius: 3,
+        height: 30,
+        borderRadius: 5,
         backgroundColor: "#fff",
         borderColor: '#73AD21',
         borderWidth: 1,
         alignItems: "center",
         justifyContent: "center",
-        margin: 3,
+        margin: 5,
     },
     roundedButtonText: {
-        fontSize: 10,
+        fontSize: 12,
         backgroundColor: "transparent"
     },
-    textInput: { height: 20, borderColor: 'gray', borderWidth: 1, fontSize: 10 },
-    text: { fontSize: 10 },
+    textInput: { height: 30, borderColor: 'gray', borderWidth: 1, fontSize: 12 },
+    text: { fontSize: 12 },
 });
 
