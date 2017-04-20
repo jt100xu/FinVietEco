@@ -1,6 +1,5 @@
-import React from 'react';
 import CmdType from './CmdType';
-import App from 'FinVietEco/js/app';
+import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 import EventBus from 'eventbusjs';
 
 export default class GlobalMessageHandler {
@@ -16,7 +15,7 @@ export default class GlobalMessageHandler {
         try {
             let response = JSON.parse(data);
             if (response.cmdtype !== CmdType.ACK) {
-                App.globalService._sendACK()                
+                GLOBALSERVICE._sendACK()
                 console.log(`GlobalMessageHandler ---> fire event handler for cmdtype:${response.cmdtype}`);
                 EventBus.dispatch(`${response.cmdtype}`, this, response)
             }

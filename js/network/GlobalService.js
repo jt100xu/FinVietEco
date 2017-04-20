@@ -1,22 +1,30 @@
-import React from 'react';
-import GlobalMessageHandler from './GlobalMessageHandler'
-import CmdType from './CmdType'
-import App from 'FinVietEco/js/app';
+import CmdType from './CmdType';
+import { DOWNLOAD_PATH } from 'FinVietEco/js/Application';
 
-export default class GlobalService {
+class GlobalService {
+    constructor() {
+    }
+
+    _setSocket(socket) {
+        this.socket = socket;
+    }
 
     _send(message) {
         if (message !== null) {
             let jsonString = JSON.stringify(message);
             console.log(`GlobalService ---> client send: ${jsonString}`);
             try {
-                App.socket.send(jsonString)
+                this.socket.send(jsonString)
             } catch (e) {
                 console.error(`GlobalService ---> client send fail`);
             }
         } else {
             console.error(`GlobalService ---> client send null message`);
         }
+    }
+
+    _isConnected() {
+        return this.socket.readyState === WebSocket.OPEN;
     }
 
     _sendACK() {
@@ -135,7 +143,8 @@ export default class GlobalService {
     }
 
     _getDownloadUrl(initiator, token, filename) {
-        return 'http://app.finviet.com.vn:3000/download?initiator=' + initiator + '&token=' + token + '&filename=' + filename;
+        return DOWNLOAD_PATH + initiator + '&token=' + token + '&filename=' + filename;
     }
 }
-GlobalService.SERVER = 'ws://app.finviet.com.vn:3979';
+
+export let GLOBALSERVICE = new GlobalService();

@@ -9,7 +9,7 @@ import {
     Image,
 } from 'react-native';
 import BaseScreen from './BaseScreen';
-import App from 'FinVietEco/js/app';
+import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
 import EventBus from 'eventbusjs';
@@ -61,7 +61,7 @@ export default class AgentInfoScreen extends BaseScreen {
         switch (response.cmdtype) {
             case CmdType.AGENT_INFO:
                 let agent = response.agent
-                let avatar = App.globalService._getDownloadUrl(data.initiator, data.token, agent.avatar)
+                let avatar = GLOBALSERVICE._getDownloadUrl(data.initiator, data.token, agent.avatar)
                 let birthday = formatBirthday(agent.birthday)
                 let address = agent.location.number + ', ' + agent.location.ward.name + ', ' + agent.location.district.name + ', ' + agent.location.province.name
                 this.setState({
@@ -81,7 +81,7 @@ export default class AgentInfoScreen extends BaseScreen {
 
     _refreshAgentInfo() {
         let data = this.props.navigation.state.params;
-        App.globalService._sendAgentInfo(data.initiator, data.token, Date.now())
+        GLOBALSERVICE._sendAgentInfo(data.initiator, data.token, Date.now())
     }
 
     render() {

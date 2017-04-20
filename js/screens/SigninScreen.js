@@ -7,10 +7,10 @@ import {
     TextInput,
 } from 'react-native';
 import BaseScreen from './BaseScreen';
-import App from 'FinVietEco/js/app';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
 import EventBus from 'eventbusjs';
+import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 
 export default class SigninScreen extends BaseScreen {
     static navigationOptions = {
@@ -56,7 +56,7 @@ export default class SigninScreen extends BaseScreen {
     }
 
     _onPressSignin(){
-        App.globalService._sendSetup(this.state.initiator)
+        GLOBALSERVICE._sendSetup(this.state.initiator)
     }
 
     render() {

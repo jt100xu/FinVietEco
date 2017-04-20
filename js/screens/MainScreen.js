@@ -9,7 +9,7 @@ import {
     Image,
 } from 'react-native';
 import BaseScreen from './BaseScreen';
-import App from 'FinVietEco/js/app';
+import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
 import EventBus from 'eventbusjs';
@@ -28,7 +28,7 @@ export default class MainScreen extends BaseScreen {
 
     componentDidMount() {
         let data = this.props.navigation.state.params;
-        let avatar = App.globalService._getDownloadUrl(data.initiator, data.token, data.avatar)
+        let avatar = GLOBALSERVICE._getDownloadUrl(data.initiator, data.token, data.avatar)
         this.setState({
             avatarUrl: avatar,
         })

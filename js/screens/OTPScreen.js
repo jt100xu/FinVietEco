@@ -7,7 +7,7 @@ import {
     TextInput,
 } from 'react-native';
 import BaseScreen from './BaseScreen';
-import App from 'FinVietEco/js/app';
+import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
 import EventBus from 'eventbusjs';
@@ -122,14 +122,14 @@ export default class OTPScreen extends BaseScreen {
     _onPressResendOTP() {
         if (this.state.remainTimeOut <= 0) {
             console.log('đã hết timeout, request Setup')
-            App.globalService._sendSetup(this.props.navigation.state.params.initiator)
+            GLOBALSERVICE._sendSetup(this.props.navigation.state.params.initiator)
         } else {
             console.log('chưa hết timeout')
         }
     }
 
     _onPressSendOTPConfirm() {
-        App.globalService._sendOTPConfirm(this.props.navigation.state.params.initiator, this.state.otp)
+        GLOBALSERVICE._sendOTPConfirm(this.props.navigation.state.params.initiator, this.state.otp)
     }
 
     render() {
