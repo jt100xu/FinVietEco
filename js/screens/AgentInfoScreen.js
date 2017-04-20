@@ -13,7 +13,7 @@ import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
 import EventBus from 'eventbusjs';
-import { formatBirthday } from 'FinVietEco/js/Utils';
+import Utils from 'FinVietEco/js/Utils';
 
 export default class AgentInfoScreen extends BaseScreen {
     static navigationOptions = {
@@ -62,7 +62,7 @@ export default class AgentInfoScreen extends BaseScreen {
             case CmdType.AGENT_INFO:
                 let agent = response.agent
                 let avatar = GLOBALSERVICE._getDownloadUrl(data.initiator, data.token, agent.avatar)
-                let birthday = formatBirthday(agent.birthday)
+                let birthday = Utils.formatBirthday(agent.birthday)
                 let address = agent.location.number + ', ' + agent.location.ward.name + ', ' + agent.location.district.name + ', ' + agent.location.province.name
                 this.setState({
                     avatarUrl: avatar,
@@ -86,8 +86,8 @@ export default class AgentInfoScreen extends BaseScreen {
 
     render() {
         return <ScrollView>
-            <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
-                <TouchableHighlight style={styles.avatar} underlayColor={underlayColor} onPress={() => this._onPressProfile()}>
+            <View style={[CommonStyles.styles.statusBarOverlayFix, CommonStyles.styles.verticalContainer]}>
+                <TouchableHighlight style={styles.avatar} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressProfile()}>
                     <Image
                         source={{
                             uri: this.state.avatarUrl,
@@ -95,19 +95,19 @@ export default class AgentInfoScreen extends BaseScreen {
                         style={styles.avatar}
                         resizeMode='center'/*, 'contain', 'stretch', 'repeat', 'center'*/ />
                 </TouchableHighlight>
-                <Text style={CommonStyles.text}>{this.state.name}</Text>
-                <Text style={CommonStyles.text}>{this.state.reference}</Text>
-                <Text style={CommonStyles.text}>Chu cua hang {this.state.owner}</Text>
-                <Text style={CommonStyles.text}>Ngay sinh {this.state.birthday}</Text>
-                <Text style={CommonStyles.text}>CMND {this.state.cmnd}</Text>
-                <Text style={CommonStyles.text}>Dia chi {this.state.address}</Text>
+                <Text style={CommonStyles.styles.text}>{this.state.name}</Text>
+                <Text style={CommonStyles.styles.text}>{this.state.reference}</Text>
+                <Text style={CommonStyles.styles.text}>Chu cua hang {this.state.owner}</Text>
+                <Text style={CommonStyles.styles.text}>Ngay sinh {this.state.birthday}</Text>
+                <Text style={CommonStyles.styles.text}>CMND {this.state.cmnd}</Text>
+                <Text style={CommonStyles.styles.text}>Dia chi {this.state.address}</Text>
                 
             </View>
         </ScrollView>
     }
 }
 
-const underlayColor = 'honeydew';
+
 const styles = StyleSheet.create({
     avatar: {
         width: 50,

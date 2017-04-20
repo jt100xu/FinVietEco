@@ -2,9 +2,7 @@ import CmdType from './CmdType';
 import { DOWNLOAD_PATH } from 'FinVietEco/js/Application';
 
 class GlobalService {
-    constructor() {
-    }
-
+    
     _setSocket(socket) {
         this.socket = socket;
     }

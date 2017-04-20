@@ -23,15 +23,15 @@ export default class ProfileScreen extends BaseScreen {
     _onPressSignout(){}
 
     render() {
-        return <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>            
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressAgentInfo()}>
-                <Text style={CommonStyles.roundedButtonText}>Thong tin diem ban hang</Text>                
+        return <View style={[CommonStyles.styles.statusBarOverlayFix, CommonStyles.styles.verticalContainer]}>            
+            <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressAgentInfo()}>
+                <Text style={CommonStyles.styles.roundedButtonText}>Thong tin diem ban hang</Text>                
             </TouchableHighlight>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressChangePass()}>
-                <Text style={CommonStyles.roundedButtonText}>Doi mat khau giao dich</Text>                
+            <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressChangePass()}>
+                <Text style={CommonStyles.styles.roundedButtonText}>Doi mat khau giao dich</Text>                
             </TouchableHighlight>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressSignout()}>
-                <Text style={CommonStyles.roundedButtonText}>Dang nhap voi so dien thoai khac</Text>                
+            <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressSignout()}>
+                <Text style={CommonStyles.styles.roundedButtonText}>Dang nhap voi so dien thoai khac</Text>                
             </TouchableHighlight>
         </View>
     }

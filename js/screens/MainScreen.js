@@ -44,9 +44,9 @@ export default class MainScreen extends BaseScreen {
     render() {
         let data = this.props.navigation.state.params;
         return <ScrollView>
-            <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
-                <Text style={CommonStyles.text}>Xin chao {data.parent_name}</Text>
-                <TouchableHighlight style={styles.avatar} underlayColor={underlayColor} onPress={() => this._onPressProfile()}>
+            <View style={[CommonStyles.styles.statusBarOverlayFix, CommonStyles.styles.verticalContainer]}>
+                <Text style={CommonStyles.styles.text}>Xin chao {data.parent_name}</Text>
+                <TouchableHighlight style={styles.avatar} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressProfile()}>
                     <Image
                         source={{
                             uri: this.state.avatarUrl,
@@ -54,19 +54,19 @@ export default class MainScreen extends BaseScreen {
                         style={styles.avatar}
                         resizeMode='center'/*, 'contain', 'stretch', 'repeat', 'center'*/ />
                 </TouchableHighlight>
-                <Text style={CommonStyles.text}>{this.state.dateString}</Text>
-                <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={underlayColor} onPress={() => this._onPressTopup()}>
-                    <Text style={CommonStyles.roundedButtonText}>Dien thoai</Text>
+                <Text style={CommonStyles.styles.text}>{this.state.dateString}</Text>
+                <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressTopup()}>
+                    <Text style={CommonStyles.styles.roundedButtonText}>Dien thoai</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={CommonStyles.roundedButton} underlayColor={underlayColor} onPress={() => this._onPressReport()}>
-                    <Text style={CommonStyles.roundedButtonText}>Bao cao</Text>
+                <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressReport()}>
+                    <Text style={CommonStyles.styles.roundedButtonText}>Bao cao</Text>
                 </TouchableHighlight>
             </View>
         </ScrollView>
     }
 }
 
-const underlayColor = 'honeydew';
+
 const styles = StyleSheet.create({
     avatar: {
         width: 50,

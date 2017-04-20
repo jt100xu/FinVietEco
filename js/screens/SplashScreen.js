@@ -19,7 +19,7 @@ export default class SplashScreen extends BaseScreen {
     }
 
     render() {
-        return <View style={[CommonStyles.statusBarOverlayFix, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
+        return <View style={[CommonStyles.styles.statusBarOverlayFix, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
             <Text> Hello... </Text>
         </View>
     }

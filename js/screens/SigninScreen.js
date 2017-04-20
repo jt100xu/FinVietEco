@@ -60,12 +60,12 @@ export default class SigninScreen extends BaseScreen {
     }
 
     render() {
-        return <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
-            <TextInput style={CommonStyles.textInput}
+        return <View style={[CommonStyles.styles.statusBarOverlayFix, CommonStyles.styles.verticalContainer]}>
+            <TextInput style={CommonStyles.styles.textInput}
                 onChangeText={(text) => this.setState({ initiator: text })}
                 value={this.state.initiator}></TextInput>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressSignin()}>
-                <Text style={CommonStyles.roundedButtonText}>Sign in</Text>                
+            <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={()=>this._onPressSignin()}>
+                <Text style={CommonStyles.styles.roundedButtonText}>Sign in</Text>                
             </TouchableHighlight>
         </View>
     }

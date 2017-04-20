@@ -135,15 +135,15 @@ export default class OTPScreen extends BaseScreen {
     render() {
         const navigationParams = this.props.navigation.state.params;
 
-        return <View style={[CommonStyles.statusBarOverlayFix, CommonStyles.verticalContainer]}>
-            <TextInput style={CommonStyles.textInput}
+        return <View style={[CommonStyles.styles.statusBarOverlayFix, CommonStyles.styles.verticalContainer]}>
+            <TextInput style={CommonStyles.styles.textInput}
                 onChangeText={(text) => this.setState({ otp: text })}
                 value={this.state.otp}></TextInput>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressResendOTP()}>
-                <Text style={CommonStyles.roundedButtonText}>{this.state.remainTimeOutText}</Text>
+            <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressResendOTP()}>
+                <Text style={CommonStyles.styles.roundedButtonText}>{this.state.remainTimeOutText}</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={CommonStyles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressSendOTPConfirm()}>
-                <Text style={CommonStyles.roundedButtonText}>Send Otp confirm</Text>
+            <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressSendOTPConfirm()}>
+                <Text style={CommonStyles.styles.roundedButtonText}>Send Otp confirm</Text>
             </TouchableHighlight>
         </View>
     }

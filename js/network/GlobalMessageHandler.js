@@ -3,8 +3,6 @@ import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
 import EventBus from 'eventbusjs';
 
 export default class GlobalMessageHandler {
-    constructor(props) {
-    }
 
     _onSocketOpen() {
         console.log(`GlobalMessageHandler ---> fire event handler for socket opened`);
