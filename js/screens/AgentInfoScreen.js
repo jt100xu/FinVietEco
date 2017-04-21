@@ -7,6 +7,7 @@ import {
     TextInput,
     ScrollView,
     Image,
+    Dimensions,
 } from 'react-native';
 import BaseScreen from './BaseScreen';
 import { GLOBALSERVICE } from 'FinVietEco/js/network/GlobalService';
@@ -14,6 +15,7 @@ import CommonStyles from 'FinVietEco/js/CommonStyles';
 import CmdType from 'FinVietEco/js/network/CmdType';
 import EventBus from 'eventbusjs';
 import Utils from 'FinVietEco/js/Utils';
+import MapView from 'react-native-maps';
 
 export default class AgentInfoScreen extends BaseScreen {
     static navigationOptions = {
@@ -32,9 +34,10 @@ export default class AgentInfoScreen extends BaseScreen {
             cmnd: '',
             address: '',
             position: {
-                desc: '',
-                long: 0,
-                lat: 0
+                latitude: 0,
+                longitude: 0,
+                latitudeDelta: 0,
+                longitudeDelta: 0,
             },
         };
     }
@@ -64,6 +67,7 @@ export default class AgentInfoScreen extends BaseScreen {
                 let avatar = GLOBALSERVICE._getDownloadUrl(data.initiator, data.token, agent.avatar)
                 let birthday = Utils.formatBirthday(agent.birthday)
                 let address = agent.location.number + ', ' + agent.location.ward.name + ', ' + agent.location.district.name + ', ' + agent.location.province.name
+                let position = Utils.regionFrom(agent.location.position.lat, agent.location.position.long,0)
                 this.setState({
                     avatarUrl: avatar,
                     agentInfo: response,
@@ -73,7 +77,7 @@ export default class AgentInfoScreen extends BaseScreen {
                     birthday: birthday,
                     cmnd: agent.cmnd,
                     address: address,
-                    position: agent.position,
+                    position: position,
                 })
                 break;
         }
@@ -84,10 +88,14 @@ export default class AgentInfoScreen extends BaseScreen {
         GLOBALSERVICE._sendAgentInfo(data.initiator, data.token, Date.now())
     }
 
+    _onPressAvatar() {
+
+    }
+
     render() {
         return <ScrollView>
             <View style={[CommonStyles.styles.statusBarOverlayFix, CommonStyles.styles.verticalContainer]}>
-                <TouchableHighlight style={styles.avatar} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressProfile()}>
+                <TouchableHighlight style={styles.avatar} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressAvatar()}>
                     <Image
                         source={{
                             uri: this.state.avatarUrl,
@@ -101,13 +109,16 @@ export default class AgentInfoScreen extends BaseScreen {
                 <Text style={CommonStyles.styles.text}>Ngay sinh {this.state.birthday}</Text>
                 <Text style={CommonStyles.styles.text}>CMND {this.state.cmnd}</Text>
                 <Text style={CommonStyles.styles.text}>Dia chi {this.state.address}</Text>
-                
+                <MapView
+                    style={styles.map}
+                    initialRegion={this.state.position} 
+                    region={this.state.position}/>
             </View>
         </ScrollView>
     }
 }
 
-
+var { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
     avatar: {
         width: 50,
@@ -118,5 +129,9 @@ const styles = StyleSheet.create({
         borderColor: '#73AD21',
         alignItems: "center",
         justifyContent: "center",
+    },
+    map: {
+        width: width,
+        height: 300,
     },
 });

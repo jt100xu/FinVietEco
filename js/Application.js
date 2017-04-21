@@ -29,29 +29,34 @@ const FinVietEco = StackNavigator(
 export const SERVER = 'ws://app.finviet.com.vn:3979';
 export const DOWNLOAD_PATH = 'http://app.finviet.com.vn:3000/download?initiator=';
 class Application extends React.Component {
+
   constructor(props) {
     super(props)
 
-    let socket = new WebSocket(SERVER);
-    socket.onopen = () => {
+    this.socket = new WebSocket(SERVER);
+    this.socket.onopen = () => {
       console.log(`WebSocket ---> client connected to ${SERVER}`);
       this.globalMessageHandler._onSocketOpen()
     };
-    socket.onmessage = (e) => {
+    this.socket.onmessage = (e) => {
       console.log(`WebSocket ---> client receive: ${e.data}`);
       this.globalMessageHandler._onSocketMessage(e.data)
     };
-    socket.onerror = (e) => {
-      console.error(`WebSocket ---> client error: ${e}`);
+    this.socket.onerror = (e) => {
+      console.error(`WebSocket ---> client error: ${e.message}`);
       this.globalMessageHandler._onSocketError(e)
     };
-    socket.onclose = (e) => {
-      console.log(`WebSocket ---> client closed: ${e}`);
+    this.socket.onclose = (e) => {
+      console.log(`WebSocket ---> client closed: ${e.code}::${e.reason}`);
       this.globalMessageHandler._onSocketClose(e)
     };
 
     this.globalMessageHandler = new GlobalMessageHandler();
-    GLOBALSERVICE._setSocket(socket)
+    GLOBALSERVICE._setSocket(this.socket)
+  }
+
+  componentWillUnmount() {
+    this.socket.close()
   }
 
   render() {

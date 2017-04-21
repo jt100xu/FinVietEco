@@ -54,11 +54,11 @@ export default class MainScreen extends BaseScreen {
                         style={styles.avatar}
                         resizeMode='center'/*, 'contain', 'stretch', 'repeat', 'center'*/ />
                 </TouchableHighlight>
-                <Text style={CommonStyles.styles.text}>{this.state.dateString}</Text>
-                <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressTopup()}>
+                <Text style={CommonStyles.styles.text}>{this.state.dateString}</Text>               
+                <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressTopup()}>
                     <Text style={CommonStyles.styles.roundedButtonText}>Dien thoai</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor={CommonStyles.underlayColor} onPress={() => this._onPressReport()}>
+                <TouchableHighlight style={CommonStyles.styles.roundedButton} underlayColor='honeydew' onPress={() => this._onPressReport()}>
                     <Text style={CommonStyles.styles.roundedButtonText}>Bao cao</Text>
                 </TouchableHighlight>
             </View>

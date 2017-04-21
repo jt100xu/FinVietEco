@@ -5,7 +5,7 @@ import EventBus from 'eventbusjs';
 export default class GlobalMessageHandler {
 
     _onSocketOpen() {
-        console.log(`GlobalMessageHandler ---> fire event handler for socket opened`);
+        console.log(`GlobalMessageHandler ---> fire event handler for socket opened.`);
         EventBus.dispatch('onSocketOpen')
     }
 
@@ -23,12 +23,12 @@ export default class GlobalMessageHandler {
     }
 
     _onSocketError(e) {
-        console.error(`GlobalMessageHandler ---> fire event handler for socket error: ${e}`);
+        console.error(`GlobalMessageHandler ---> fire event handler for socket error.`);
         EventBus.dispatch('onSocketError', this, e)
     }
 
     _onSocketClose(e) {
-        console.log(`GlobalMessageHandler ---> fire event handler for socket close: ${e}`);
+        console.log(`GlobalMessageHandler ---> fire event handler for socket close.`);
         EventBus.dispatch('onSocketClose', this, e)
     }
 }

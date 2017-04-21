@@ -27,7 +27,7 @@ module.exports = {
             fontSize: 12,
             backgroundColor: "transparent"
         },
-        textInput: { height: 30, borderColor: 'gray', borderWidth: 1, fontSize: 12 },
+        textInput: { height: (Platform.OS === 'ios') ? 30 : 40, borderColor: 'gray', borderWidth: 1, fontSize: 12 },
         text: { fontSize: 12 },
     }),
 };
